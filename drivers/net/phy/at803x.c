@@ -277,21 +277,31 @@ does_not_require_reset_workaround:
 static int at803x_config_init(struct phy_device *phydev)
 {
 	int ret;
+	int regval;
 
 	ret = genphy_config_init(phydev);
 	if (ret < 0)
 		return ret;
+		
+	// Ref_clk to 125MHz	
+	if (phydev->drv->phy_id == ATH8035_PHY_ID) {
+		phy_write(phydev,  AT803X_MMD_ACCESS_CONTROL, 0x0007);
+		phy_write(phydev, AT803X_MMD_ACCESS_CONTROL_DATA, 0x8016);
+		phy_write(phydev, AT803X_MMD_ACCESS_CONTROL, 0x4007);
+		regval = phy_read(phydev, AT803X_MMD_ACCESS_CONTROL_DATA);
+		phy_write(phydev, AT803X_MMD_ACCESS_CONTROL_DATA, (regval|0x0018));		
+	}
 
 	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID ||
 			phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
-		ret = at803x_enable_rx_delay(phydev);
+		ret = at803x_enable_rx_delay(phydev);		
 		if (ret < 0)
 			return ret;
 	}
 
 	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID ||
 			phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
-		ret = at803x_enable_tx_delay(phydev);
+		ret = at803x_enable_tx_delay(phydev);		
 		if (ret < 0)
 			return ret;
 	}
