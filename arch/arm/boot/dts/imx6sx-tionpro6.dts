@@ -161,8 +161,9 @@
 
 &flexcan1 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_can>;
+	pinctrl-0 = <&pinctrl_can1>;
 	//xceiver-supply = <&reg_can1_3v3>;
+	trx-stby-gpio = <&gpio4 27 GPIO_ACTIVE_LOW>;
 	status = "okay";
 };
 
@@ -434,7 +435,9 @@
 	uart-has-rtscts;
 	linux,rs485-enabled-at-boot-time;
 	rs485-rx-during-tx;
-	rs485-rts-delay = <0 20>;		// in milliseconds
+	rs485-rts-delay = <0 0>;		// in milliseconds
+	rs485-rts-active-high;
+	rts-gpios = <&gpio4 24 0>;
 	status = "okay";
 };
 
@@ -447,7 +450,7 @@
 &uart5 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5>;
-	uart-has-rtscts;
+	//uart-has-rtscts;
 	status = "okay";
 };
 
@@ -456,9 +459,11 @@
 	pinctrl-0 = <&pinctrl_uart6>;
 	uart-has-rtscts;
 	linux,rs485-enabled-at-boot-time;
-	//rs485-rx-during-tx;
-	rs485-rts-delay = <0 20>;		// in milliseconds
-	fsl,dte-mode;
+	rs485-rx-during-tx;
+	rs485-rts-delay = <0 0>;		// in milliseconds
+	rs485-rts-active-high;
+	rts-gpios = <&gpio2 15 1>;
+	//fsl,dte-mode;
 	status = "okay";
 };
 
