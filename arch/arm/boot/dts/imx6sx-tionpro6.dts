@@ -1,4 +1,3 @@
-
 /*
 * Copyright (C) 2018 Zao Zeo
 */
@@ -23,6 +22,15 @@
 		brightness-levels = <0 4 8 16 32 64 128 255>;
 		default-brightness-level = <6>;
 		fb-names = "mxs-lcdif0";
+	};
+	
+	backlight_lvds {
+		compatible = "pwm-backlight";
+		pwms = <&pwm4 0 5000000>;
+		brightness-levels = <0 4 8 16 32 64 128 255>;
+		default-brightness-level = <6>;
+		fb-names = "mxs-lcdif2";
+		//power-supply = <&reg_3p3v>;
 	};
 
     	chosen {
@@ -56,8 +64,6 @@
 		};
 
 	regulators {
-		
-
 		reg_psu_5v: regulator@3 {
 			compatible = "regulator-fixed";
 			reg = <3>;
@@ -86,6 +92,21 @@
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
 		};
+		
+		reg_lcd_3v3: regulator@9 {
+			compatible = "regulator-fixed";
+			reg = <9>;
+			//pinctrl-names = "default";
+			//pinctrl-0 = <&pinctrl_peri_3v3>;
+			regulator-name = "lcd_3v3";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio3 27 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+			//regulator-always-on;
+		};
+		
+		
 	};	
 	
 	sound {
@@ -116,6 +137,16 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_audmux>;
 	status = "okay";
+};
+
+&csi1 {
+	status = "okay";
+
+	port {
+		csi1_ep: endpoint {
+			remote-endpoint = <&ov2640_ep>;
+		};
+	};
 };
 
 &fec1 {
@@ -163,7 +194,8 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_can1>;
 	//xceiver-supply = <&reg_can1_3v3>;
-	trx-stby-gpio = <&gpio4 27 GPIO_ACTIVE_LOW>;
+	trx_stby_gpio = <&gpio4 27 GPIO_ACTIVE_LOW>;
+	gpios = <&gpio4 27 GPIO_ACTIVE_LOW>;
 	status = "okay";
 };
 
@@ -282,12 +314,14 @@
 		interrupt-parent = <&gpio3>;
 		interrupts = <19 IRQ_TYPE_LEVEL_LOW>;		
 		gpios = <&gpio3 19 0>;
-	        ti,x-plate-ohms = <400>;
+	        ti,x-plate-ohms = <450>;
 	        //ti,max-rt=
 	        //ti,fuzzx
 	        //ti,fuzzy
 	        //ti,fuzzz
 	        //ti,poll-period
+	        status = "okay";
+	        //status = "disabled";
             };
 };
 
@@ -296,6 +330,25 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c3>;
 	status = "okay";
+	
+	ov2640: ov2640@30 {
+		compatible = "ovti,ov2640";
+		reg = <0x30>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_csi1>;
+		clocks = <&clks IMX6SX_CLK_CSI>;		
+		clock-names = "xvclk";		
+		ipu_id = <0>;
+		csi_id = <0>;		
+		assigned-clocks = <&clks IMX6SX_CLK_CSI>;
+		assigned-clock-rates = <24000000>;
+		
+		port {
+			ov2640_ep: endpoint {
+				remote-endpoint = <&csi1_ep>;
+			};
+		};
+	};
 };
 
 &i2c4 {
@@ -308,19 +361,19 @@
 &lcdif1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lcd1>;
-	//lcd-supply = <&reg_lcd_3v3>;
-	display = <&display0>;
-	status = "disabled";
+	lcd-supply = <&reg_lcd_3v3>;
+	display = <&display0>;	
+	status = "okay";
 
 	display0: display@0 {
-		bits-per-pixel = <16>;
+		bits-per-pixel = <18>;
 		bus-width = <24>;
 
 		display-timings {
 			native-mode = <&timing0>;
 			timing0: timing0 {
 				clock-frequency = <33500000>;
-				hactive = <800>;
+				hactive = <640>;
 				vactive = <480>;
 				hback-porch = <89>;
 				hfront-porch = <164>;
@@ -340,7 +393,13 @@
 &lcdif2 {
 	display = <&display1>;
 	disp-dev = "ldb";
-	status = "disabled";
+	//status = "disabled";
+	status = "okay";
+	
+	assigned-clocks = <&clks IMX6SX_CLK_LCDIF2_SEL>;
+	assigned-clock-parents = <&clks IMX6SX_CLK_LDB_DI0>;
+	assigned-clock-rates = <0>;
+	
 	display1: display@1 {
 		bits-per-pixel = <16>;
 		bus-width = <18>;
@@ -352,7 +411,9 @@
 		fsl,data-mapping = "spwg";
 		fsl,data-width = <18>;
 		crtc = "lcdif2";
-		status = "disabled";
+		//status = "disabled";
+		status = "okay";
+		
 		display-timings {
 			native-mode = <&timing1>;
 			timing1: hsd100pxn1 {
@@ -368,6 +429,18 @@
 			};
 		};
 	};
+};
+
+&pwm4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm4>;
+	status = "okay";
+};
+
+&pwm8 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm8>;
+	status = "okay";
 };
 
 &qspi2 {

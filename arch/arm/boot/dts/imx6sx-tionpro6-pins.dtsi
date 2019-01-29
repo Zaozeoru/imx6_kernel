@@ -31,7 +31,7 @@
             fsl,pins = <
                 MX6SX_PAD_QSPI1A_SS1_B__CAN1_RX            0x0001B0B0
                 MX6SX_PAD_QSPI1B_DQS__CAN1_TX              0x0001B0B0
-                MX6SX_PAD_QSPI1B_DATA3__GPIO4_IO_27        0x0001B0B0
+                MX6SX_PAD_QSPI1B_DATA3__GPIO4_IO_27        0x000130B0
             >;
         };
 
@@ -98,20 +98,20 @@
 
         pinctrl_hog: pinctrl_hoggrp {                      /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
-                MX6SX_PAD_CSI_DATA02__GPIO1_IO_16          0x000010B0
-                MX6SX_PAD_CSI_DATA03__GPIO1_IO_17          0x000010B0
-                MX6SX_PAD_CSI_DATA04__GPIO1_IO_18          0x000010B0
-                MX6SX_PAD_CSI_DATA05__GPIO1_IO_19          0x000010B0
+                //MX6SX_PAD_CSI_DATA02__GPIO1_IO_16          0x000010B0
+                //MX6SX_PAD_CSI_DATA03__GPIO1_IO_17          0x000010B0
+                //MX6SX_PAD_CSI_DATA04__GPIO1_IO_18          0x000010B0
+                //MX6SX_PAD_CSI_DATA05__GPIO1_IO_19          0x000010B0
                 MX6SX_PAD_ENET1_COL__GPIO2_IO_0            0x000010B0
                 MX6SX_PAD_LCD1_DATA19__GPIO3_IO_20         0x000010B0
-                MX6SX_PAD_LCD1_DATA20__GPIO3_IO_21         0x000010B0
+                //MX6SX_PAD_LCD1_DATA20__GPIO3_IO_21         0x000010B0
                 MX6SX_PAD_LCD1_DATA21__GPIO3_IO_22         0x000010B0
                 MX6SX_PAD_LCD1_DATA22__GPIO3_IO_23         0x000010B0
                 MX6SX_PAD_LCD1_DATA23__GPIO3_IO_24         0x000010B0
-                MX6SX_PAD_LCD1_ENABLE__GPIO3_IO_25         0x000010B0
-                MX6SX_PAD_LCD1_HSYNC__GPIO3_IO_26          0x000010B0
-                MX6SX_PAD_LCD1_RESET__GPIO3_IO_27          0x000010B0
-                MX6SX_PAD_LCD1_VSYNC__GPIO3_IO_28          0x000010B0
+                //MX6SX_PAD_LCD1_ENABLE__GPIO3_IO_25         0x000010B0
+                //MX6SX_PAD_LCD1_HSYNC__GPIO3_IO_26          0x000010B0
+                //MX6SX_PAD_LCD1_RESET__GPIO3_IO_27          0x000010B0
+                //MX6SX_PAD_LCD1_VSYNC__GPIO3_IO_28          0x000010B0
                 //MX6SX_PAD_NAND_ALE__GPIO4_IO_0             0x000010B0
                 //MX6SX_PAD_NAND_CE0_B__GPIO4_IO_1           0x000010B0
                 //MX6SX_PAD_NAND_CE1_B__GPIO4_IO_2           0x000010B0
@@ -123,7 +123,7 @@
                 MX6SX_PAD_NAND_DATA04__GPIO4_IO_8          0x000010B0
                 MX6SX_PAD_NAND_DATA05__GPIO4_IO_9          0x000010B0
                 MX6SX_PAD_NAND_DATA06__GPIO4_IO_10         0x000010B0
-                MX6SX_PAD_NAND_DATA07__GPIO4_IO_11         0x000010B0
+                //MX6SX_PAD_NAND_DATA07__GPIO4_IO_11         0x000010B0
                 //MX6SX_PAD_NAND_READY_B__GPIO4_IO_13        0x000010B0
                 MX6SX_PAD_NAND_RE_B__GPIO4_IO_12           0x000010B0
                 MX6SX_PAD_NAND_WE_B__GPIO4_IO_14           0x000010B0
@@ -136,7 +136,7 @@
                 //MX6SX_PAD_QSPI1B_DATA0__GPIO4_IO_24        0x000010B0
                 MX6SX_PAD_QSPI1B_DATA1__GPIO4_IO_25        0x000010B0
                 MX6SX_PAD_QSPI1B_DATA2__GPIO4_IO_26        0x000010B0
-                MX6SX_PAD_QSPI1B_DATA3__GPIO4_IO_27        0x000010B0
+                //MX6SX_PAD_QSPI1B_DATA3__GPIO4_IO_27        0x000010B0
                 MX6SX_PAD_SD1_CLK__GPIO6_IO_0              0x000010B0
                 MX6SX_PAD_SD1_CMD__GPIO6_IO_1              0x000010B0
             >;
@@ -161,8 +161,8 @@
 
         pinctrl_i2c3: pinctrl_i2c3grp {                    /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
-                MX6SX_PAD_KEY_COL4__I2C3_SCL               0x000010B0
-                MX6SX_PAD_KEY_ROW4__I2C3_SDA               0x000010B0
+                MX6SX_PAD_KEY_COL4__I2C3_SCL               0x4001b8b1
+                MX6SX_PAD_KEY_ROW4__I2C3_SDA               0x4001b8b1
             >;
         };
 
@@ -340,7 +340,8 @@
                 MX6SX_PAD_LCD1_DATA17__LCDIF1_DATA_17      0x000010B0
                 MX6SX_PAD_LCD1_ENABLE__LCDIF1_ENABLE       0x000010B0
                 MX6SX_PAD_LCD1_HSYNC__LCDIF1_HSYNC         0x000010B0
-                MX6SX_PAD_LCD1_RESET__LCDIF1_RESET         0x000010B0
+                //MX6SX_PAD_LCD1_RESET__LCDIF1_RESET         0x000010B0
+                MX6SX_PAD_LCD1_RESET__GPIO3_IO_27          0x00001030
                 MX6SX_PAD_LCD1_VSYNC__LCDIF1_VSYNC         0x000010B0
             >;
         };
@@ -348,18 +349,18 @@
 
         pinctrl_csi1: pinctrl_csi1grp {                    /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
-                MX6SX_PAD_CSI_DATA00__CSI1_DATA_2          0x000010B0
-                MX6SX_PAD_CSI_DATA01__CSI1_DATA_3          0x000010B0
-                MX6SX_PAD_CSI_DATA02__CSI1_DATA_4          0x000010B0
-                MX6SX_PAD_CSI_DATA03__CSI1_DATA_5          0x000010B0
-                MX6SX_PAD_CSI_DATA04__CSI1_DATA_6          0x000010B0
-                MX6SX_PAD_CSI_DATA05__CSI1_DATA_7          0x000010B0
-                //MX6SX_PAD_CSI_DATA06__CSI1_DATA_8          0x000010B0
-                MX6SX_PAD_CSI_DATA07__CSI1_DATA_9          0x000010B0
-                MX6SX_PAD_CSI_HSYNC__CSI1_HSYNC            0x000010B0
-                MX6SX_PAD_CSI_MCLK__CSI1_MCLK              0x000010B0
-                MX6SX_PAD_CSI_PIXCLK__CSI1_PIXCLK          0x000010B0
-                MX6SX_PAD_CSI_VSYNC__CSI1_VSYNC            0x000010B0
+                MX6SX_PAD_CSI_DATA00__CSI1_DATA_2          0x110b0
+                MX6SX_PAD_CSI_DATA01__CSI1_DATA_3          0x110b0
+                MX6SX_PAD_CSI_DATA02__CSI1_DATA_4          0x110b0
+                MX6SX_PAD_CSI_DATA03__CSI1_DATA_5          0x110b0
+                MX6SX_PAD_CSI_DATA04__CSI1_DATA_6          0x110b0
+                MX6SX_PAD_CSI_DATA05__CSI1_DATA_7          0x110b0
+                MX6SX_PAD_CSI_DATA06__CSI1_DATA_8          0x110b0
+                MX6SX_PAD_CSI_DATA07__CSI1_DATA_9          0x110b0
+                MX6SX_PAD_CSI_HSYNC__CSI1_HSYNC           0x110b0
+                MX6SX_PAD_CSI_MCLK__CSI1_MCLK               0x110b0
+                MX6SX_PAD_CSI_PIXCLK__CSI1_PIXCLK           0xb0b1
+                MX6SX_PAD_CSI_VSYNC__CSI1_VSYNC            0x110b0
             >;
         };
 
@@ -444,7 +445,7 @@
 
         pinctrl_pwm4: pinctrl_pwm4grp {                    /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
-                MX6SX_PAD_SD1_DATA1__PWM4_OUT              0x000010B0
+                MX6SX_PAD_NAND_DATA07__PWM4_OUT            0x000110B0
             >;
         };
 
