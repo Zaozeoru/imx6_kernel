@@ -531,7 +531,7 @@
 	rs485-rx-during-tx;
 	rs485-rts-delay = <0 0>;		// in milliseconds
 	rs485-rts-active-high;
-	rts-gpios = <&gpio2 15 1>;
+	rts-gpios = <&gpio2 15 0>;
 	//fsl,dte-mode;
 	status = "okay";
 };
