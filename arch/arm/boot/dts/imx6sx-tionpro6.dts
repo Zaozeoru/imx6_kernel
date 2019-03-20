@@ -1,0 +1,574 @@
+/*
+* Copyright (C) 2018 Zao Zeo
+*/
+
+/dts-v1/;
+
+#include "imx6sx.dtsi"
+#include "imx6sx-tionpro6-pins.dtsi"
+
+/ {
+	model = "Zao Zeo i.MX 6SoloX Board";
+	compatible = "fsl,imx6sx-tionpro6", "fsl,imx6sx";
+
+	soc {
+        	#address-cells = <1>;
+        	#size-cells = <1>;        	
+    	};
+
+	backlight0_lcd {
+		compatible = "pwm-backlight";
+		pwms = <&pwm8 0 5000000>;
+		brightness-levels = <0 4 8 16 32 64 128 255>;
+		default-brightness-level = <6>;
+		fb-names = "mxs-lcdif0";
+	};
+	
+	backlight2_lvds {
+		compatible = "pwm-backlight";
+		pwms = <&pwm4 0 5000000>;
+		brightness-levels = <0 4 8 16 32 64 128 255>;
+		default-brightness-level = <6>;
+		fb-names = "mxs-lcdif2";
+		//power-supply = <&reg_3p3v>;
+	};
+
+    	chosen {
+		stdout-path = &uart1;
+	};
+
+    	memory {
+		reg = <0x80000000 0x40000000>;
+	};
+	
+	reg_usb_otg1_vbus: regulator-usb-otg1-vbus {
+			compatible = "regulator-fixed";			
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_usb_otg1_vbus>;
+			regulator-name = "usb_otg1_vbus";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			gpio = <&gpio1 9 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
+	reg_usb_otg2_vbus: regulator-usb-otg2-vbus {
+			compatible = "regulator-fixed";			
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_usb_otg2_vbus>;
+			regulator-name = "usb_otg2_vbus";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			gpio = <&gpio1 12 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
+		reg_psu_5v: regulator@3 {
+			compatible = "regulator-fixed";
+			reg = <3>;
+			regulator-name = "PSU-5V0";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+		};
+	
+		reg_peri_3v3: regulator@5 {
+			compatible = "regulator-fixed";
+			reg = <5>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_peri_3v3>;
+			regulator-name = "peri_3v3";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio4 16 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+			regulator-always-on;
+		};
+
+		reg_vref_3v3: regulator@7 {
+			compatible = "regulator-fixed";
+			reg = <7>;
+			regulator-name = "vref-3v3";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+		};
+		
+		reg_lcd_3v3: regulator@9 {
+			compatible = "regulator-fixed";
+			reg = <9>;
+			//pinctrl-names = "default";
+			//pinctrl-0 = <&pinctrl_peri_3v3>;
+			regulator-name = "lcd_3v3";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio3 27 GPIO_ACTIVE_HIGH>;
+			enable-active-high;			
+		};	
+		
+		
+	
+	sound {
+		compatible = "fsl,imx-audio-sgtl5000";
+		model = "imx6sx-tionpro6-sgtl5000";
+		ssi-controller = <&ssi1>;
+		audio-codec = <&codec>;
+		audio-routing =
+			"MIC_IN", "Mic Jack",
+			"Mic Jack", "Mic Bias",
+			"Headphone Jack", "HP_OUT";
+		mux-int-port = <1>;
+		mux-ext-port = <5>;
+  	 };
+};
+
+&adc1 {
+	vref-supply = <&reg_vref_3v3>;
+	status = "okay";
+};
+
+&adc2 {
+	vref-supply = <&reg_vref_3v3>;
+	status = "okay";
+};
+
+&audmux {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_audmux>;
+	status = "okay";
+};
+
+&csi1 {
+	status = "okay";
+
+	port {
+		csi1_ep: endpoint {
+			remote-endpoint = <&ov2640_ep>;
+		};
+	};
+};
+
+&fec1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_enet1>;
+	phy-mode = "rgmii-id";
+	phy-handle = <&ethphy1>;
+	//phy-supply = <&reg_3p3v>;
+	phy-reset-gpios = <&gpio2 7 GPIO_ACTIVE_LOW>; 
+	fsl,magic-packet;
+	status = "okay";	
+};
+
+&fec2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_enet2>;
+	phy-mode = "rgmii-id";
+	phy-handle = <&ethphy2>;
+	//phy-supply = <&reg_3p3v>;
+	phy-reset-gpios = <&gpio2 6 GPIO_ACTIVE_LOW>; 
+	fsl,magic-packet;
+	status = "okay";
+	
+	mdio {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		ethphy1: ethernet-phy@4 {
+			compatible = "ethernet-phy-ieee802.3-c22";
+			reg = <4>;
+			interrupt-parent = <&gpio2>;
+			interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
+		};
+
+		ethphy2: ethernet-phy@5 {
+			compatible = "ethernet-phy-ieee802.3-c22";
+			reg = <5>;
+			interrupt-parent = <&gpio2>;
+			interrupts = <8 IRQ_TYPE_EDGE_FALLING>;
+		};
+	};
+};
+
+&flexcan1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_can1>;
+	//xceiver-supply = <&reg_can1_3v3>;
+	trx_stby_gpio = <&gpio4 27 GPIO_ACTIVE_LOW>;
+	gpios = <&gpio4 27 GPIO_ACTIVE_LOW>;
+	status = "okay";
+};
+
+&i2c1 {
+	clock-frequency = <400000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_i2c1>;
+	status = "okay";
+
+	pmic: pfuze100@08 {
+		compatible = "fsl,pfuze3001";
+		reg = <0x08>;
+
+		regulators {
+			sw1_reg: sw1 {
+				regulator-min-microvolt = <700000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			sw2_reg: sw2 {
+				regulator-min-microvolt = <1500000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			sw3_reg: sw3 {
+				regulator-min-microvolt = <900000>;
+				regulator-max-microvolt = <1650000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			snvs_reg: vsnvs {
+				regulator-min-microvolt = <1000000>;
+				regulator-max-microvolt = <3000000>;
+				regulator-boot-on;
+				regulator-always-on;
+			};
+
+			vgen1_reg: vldo1 {
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-always-on;
+			};
+
+			vgen2_reg: vldo2 {
+				regulator-min-microvolt = <800000>;
+				regulator-max-microvolt = <1550000>;
+				regulator-always-on;
+			};
+
+			vgen3_reg: vccsd {
+				regulator-min-microvolt = <2850000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-always-on;
+			};
+
+			vgen4_reg: v33 {
+				regulator-min-microvolt = <2850000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-always-on;
+			};
+
+			vgen5_reg: vldo3 {
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-always-on;
+			};
+
+			vldo4_1v8_reg: vldo4 {
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-always-on;
+			};
+		};
+	};
+	
+	rtc_m41t00: rtc@68 {
+                compatible = "st,m41t00";
+                reg = <0x68>;
+        };
+};
+
+&i2c2 {
+	clock-frequency = <100000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_i2c2>;
+	status = "okay";
+	
+	codec: sgtl5000@0a {
+		compatible = "fsl,sgtl5000";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_sgtl5000>;
+		reg = <0x0a>;
+		clocks = <&clks IMX6SX_CLK_AUDIO>;		
+		VDDA-supply = <&vldo4_1v8_reg>;
+		VDDIO-supply = <&vldo4_1v8_reg>;
+		VDDD-supply = <&vldo4_1v8_reg>;
+		//assigned-clocks = <&clks IMX6SX_CLK_CKO2_SEL>,
+		//		  <&clks IMX6SX_CLK_CKO2>;
+		//assigned-clock-parents = <&clks IMX6SX_CLK_OSC>;
+		//assigned-clock-rates = <0>, <24000000>;
+		micbias-resistor-k-ohms = <2>;
+		//micbias-voltage-m-volts = <2250>;
+	};
+	
+	touch_tsc2007: tsc2007@48 {
+                compatible = "ti,tsc2007";
+                reg = <0x48>;
+                pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_tsc2007>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <19 IRQ_TYPE_LEVEL_LOW>;		
+		gpios = <&gpio3 19 0>;
+	        ti,x-plate-ohms = <450>;
+	        //ti,max-rt=
+	        //ti,fuzzx
+	        //ti,fuzzy
+	        //ti,fuzzz
+	        //ti,poll-period
+	        status = "okay";
+	        //status = "disabled";
+            };
+};
+
+&i2c3 {
+	clock-frequency = <400000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_i2c3>;
+	status = "okay";
+	
+	ov2640: ov2640@30 {
+		compatible = "ovti,ov2640";
+		reg = <0x30>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_csi1>;
+		clocks = <&clks IMX6SX_CLK_CSI>;		
+		clock-names = "xvclk";		
+		ipu_id = <0>;
+		csi_id = <0>;		
+		assigned-clocks = <&clks IMX6SX_CLK_CSI>;
+		assigned-clock-rates = <24000000>;
+		
+		port {
+			ov2640_ep: endpoint {
+				remote-endpoint = <&csi1_ep>;
+			};
+		};
+	};
+};
+
+&i2c4 {
+	clock-frequency = <400000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_i2c4>;
+	status = "disabled";
+};
+
+&lcdif1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lcd1>;
+	lcd-supply = <&reg_lcd_3v3>;
+	display = <&display0>;	
+	status = "okay";
+
+	display0: display@0 {
+		bits-per-pixel = <16>;
+		bus-width = <18>;
+
+		display-timings {
+			native-mode = <&timing0>;
+			timing0: timing0 {
+				clock-frequency = <25000000>;
+				hactive = <640>;
+				vactive = <480>;
+				hback-porch = <75>;
+				hfront-porch = <75>;
+				vback-porch = <25>;
+				vfront-porch = <10>;
+				hsync-len = <10>;
+				vsync-len = <10>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				de-active = <1>;
+				pixelclk-active = <1>;
+			};
+		};
+	};
+};
+
+&lcdif2 {
+	display = <&display1>;
+	disp-dev = "ldb";
+	//status = "disabled";
+	status = "okay";
+	
+	assigned-clocks = <&clks IMX6SX_CLK_LCDIF2_SEL>;
+	assigned-clock-parents = <&clks IMX6SX_CLK_LDB_DI0>;
+	assigned-clock-rates = <0>;
+	
+	display1: display@1 {
+		bits-per-pixel = <16>;
+		bus-width = <18>;
+	};
+};
+&ldb {
+	status = "okay";
+	lvds-channel@0 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <18>;
+		crtc = "lcdif2";
+		//status = "disabled";
+		status = "okay";
+		
+		display-timings {
+			native-mode = <&timing1>;
+			timing1: hsd100pxn1 {
+				clock-frequency = <65000000>;
+				hactive = <1024>;
+				vactive = <768>;
+				hback-porch = <220>;
+				hfront-porch = <40>;
+				vback-porch = <21>;
+				vfront-porch = <7>;
+				hsync-len = <60>;
+				vsync-len = <10>;
+			};
+		};
+	};
+};
+
+&pwm4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm4>;
+	status = "okay";
+};
+
+&pwm8 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm8>;
+	status = "okay";
+};
+
+&qspi2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_qspi2a>;
+	status = "okay";
+	
+	flash0: n25q128@0 {
+		//u-boot,dm-pre-reloc;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		//compatible = "n25q128", "spi-flash";
+		compatible = "micron,n25q128a13", "jedec,spi-nor";
+		reg = <0>;      /* chip select */
+		spi-max-frequency = <50000000>;
+		m25p,fast-read;
+		//page-size = <256>;
+		//block-size = <16>; /* 2^16, 64KB */
+		//read-delay = <4>;  /* delay value in read data capture register */
+		//tshsl-ns = <50>;
+		//tsd2d-ns = <50>;
+		//tchsh-ns = <4>;
+		//tslch-ns = <4>; 
+	};
+};
+
+&snvs_rtc {
+	status = "disabled";
+};
+
+&ssi1 {
+	status = "okay";
+};
+
+&usbotg1 {
+	vbus-supply = <&reg_usb_otg1_vbus>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usb_otg1>;	
+	status = "okay";
+};
+
+&usbotg2 {
+	vbus-supply = <&reg_usb_otg2_vbus>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usb_otg2>;
+	dr_mode = "host";
+	status = "okay";
+};
+
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart1>;
+	status = "okay";
+};
+
+&uart2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart2>;
+	status = "okay";
+};
+
+&uart3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart3>;
+	uart-has-rtscts;
+	linux,rs485-enabled-at-boot-time;
+	rs485-rx-during-tx;
+	rs485-rts-delay = <0 0>;		// in milliseconds
+	rs485-rts-active-high;
+	rts-gpios = <&gpio4 24 0>;
+	status = "okay";
+};
+
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart4>;
+	status = "okay";
+};
+
+&uart5 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart5>;
+	//uart-has-rtscts;
+	status = "okay";
+};
+
+&uart6 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart6>;
+	uart-has-rtscts;
+	linux,rs485-enabled-at-boot-time;
+	rs485-rx-during-tx;
+	rs485-rts-delay = <0 0>;		// in milliseconds
+	rs485-rts-active-high;
+	rts-gpios = <&gpio2 15 0>;
+	//fsl,dte-mode;
+	status = "okay";
+};
+
+&usdhc2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc2>;
+	non-removable;
+	no-1-8-v;
+	keep-power-in-suspend;
+	wakeup-source;
+	status = "disabled";
+};
+
+&usdhc3 {
+	pinctrl-names = "default";//, "state_100mhz", "state_200mhz";
+	pinctrl-0 = <&pinctrl_usdhc3>;
+	//pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+	//pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
+	bus-width = <4>;
+	cd-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
+	//wp-gpios = <&gpio2 15 GPIO_ACTIVE_HIGH>;
+	//fsl,wp-controller;
+	keep-power-in-suspend;
+	wakeup-source;
+	//vmmc-supply = <&sw3_reg>;
+	status = "okay";
+};
+
+&usdhc4 {
+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+	pinctrl-0 = <&pinctrl_usdhc4_50mhz>;
+	pinctrl-1 = <&pinctrl_usdhc4_100mhz>;
+	pinctrl-2 = <&pinctrl_usdhc4_200mhz>;
+	bus-width = <8>;
+	non-removable;
+	//vmmc-supply = <&vldo4_1v8_reg>;
+	keep-power-in-suspend;		
+	status = "okay";
+};
