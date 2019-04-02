@@ -57,7 +57,7 @@
                 MX6SX_PAD_ENET1_RX_CLK__GPIO2_IO_4         0x0000B0B0
                 MX6SX_PAD_ENET1_TX_CLK__GPIO2_IO_5         0x0000B0B0
                 MX6SX_PAD_ENET2_CRS__GPIO2_IO_7            0x0000B0B0
-                MX6SX_PAD_RGMII1_RD0__ENET1_RX_DATA_0      0x00003081
+                MX6SX_PAD_RGMII1_RD0__ENET1_RX_DATA_0      0x00007081
                 MX6SX_PAD_RGMII1_RD1__ENET1_RX_DATA_1      0x00003081
                 MX6SX_PAD_RGMII1_RD2__ENET1_RX_DATA_2      0x00007081
                 MX6SX_PAD_RGMII1_RD3__ENET1_RX_DATA_3      0x00007081
@@ -80,7 +80,7 @@
                 MX6SX_PAD_ENET2_COL__GPIO2_IO_6            0x0000B0B0
                 MX6SX_PAD_ENET2_RX_CLK__GPIO2_IO_8         0x0000B0B0
                 MX6SX_PAD_ENET2_TX_CLK__GPIO2_IO_9         0x0000B0B0
-                MX6SX_PAD_RGMII2_RD0__ENET2_RX_DATA_0      0x00007081
+                MX6SX_PAD_RGMII2_RD0__ENET2_RX_DATA_0      0x00003081
                 MX6SX_PAD_RGMII2_RD1__ENET2_RX_DATA_1      0x00003081
                 MX6SX_PAD_RGMII2_RD2__ENET2_RX_DATA_2      0x00007081
                 MX6SX_PAD_RGMII2_RD3__ENET2_RX_DATA_3      0x00007081
@@ -134,11 +134,12 @@
                 MX6SX_PAD_QSPI1A_SCLK__GPIO4_IO_21         0x000010B0
                 MX6SX_PAD_QSPI1A_SS0_B__GPIO4_IO_22        0x000010B0
                 //MX6SX_PAD_QSPI1B_DATA0__GPIO4_IO_24        0x000010B0
-                MX6SX_PAD_QSPI1B_DATA1__GPIO4_IO_25        0x000010B0
-                MX6SX_PAD_QSPI1B_DATA2__GPIO4_IO_26        0x000010B0
+                //MX6SX_PAD_QSPI1B_DATA1__GPIO4_IO_25        0x000010B0
+                //MX6SX_PAD_QSPI1B_DATA2__GPIO4_IO_26        0x000010B0
                 //MX6SX_PAD_QSPI1B_DATA3__GPIO4_IO_27        0x000010B0
                 MX6SX_PAD_SD1_CLK__GPIO6_IO_0              0x000010B0
                 MX6SX_PAD_SD1_CMD__GPIO6_IO_1              0x000010B0
+                //MX6SX_PAD_GPIO1_IO13__WDOG1_WDOG_ANY       0x000010B0
             >;
         };
 
@@ -149,6 +150,13 @@
                 MX6SX_PAD_GPIO1_IO01__I2C1_SDA             0x4001b8b1
             >;
         };
+        
+        pinctrl_i2c1_gpio: pinctrl_i2c1gpiogrp {                    /*!< Function assigned for the core: Cortex-A9[ca9] */
+            fsl,pins = <
+                MX6SX_PAD_GPIO1_IO00__GPIO1_IO_0              0x4001b8b1
+                MX6SX_PAD_GPIO1_IO01__GPIO1_IO_1              0x4001b8b1
+            >;
+        };
 
 
         pinctrl_i2c2: pinctrl_i2c2grp {                    /*!< Function assigned for the core: Cortex-A9[ca9] */
@@ -157,12 +165,26 @@
                 MX6SX_PAD_GPIO1_IO03__I2C2_SDA             0x4001b8b1
             >;
         };
+        
+        pinctrl_i2c2_gpio: pinctrl_i2c2gpiogrp {                    /*!< Function assigned for the core: Cortex-A9[ca9] */
+            fsl,pins = <
+                MX6SX_PAD_GPIO1_IO02__GPIO1_IO_2             0x4001b8b1
+                MX6SX_PAD_GPIO1_IO03__GPIO1_IO_3             0x4001b8b1
+            >;
+        };
 
 
         pinctrl_i2c3: pinctrl_i2c3grp {                    /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
                 MX6SX_PAD_KEY_COL4__I2C3_SCL               0x4001b8b1
                 MX6SX_PAD_KEY_ROW4__I2C3_SDA               0x4001b8b1
+            >;
+        };
+        
+        pinctrl_i2c3_gpio: pinctrl_i2c3gpiogrp {                    /*!< Function assigned for the core: Cortex-A9[ca9] */
+            fsl,pins = <
+                MX6SX_PAD_KEY_COL4__GPIO2_IO_14               0x4001b8b1
+                MX6SX_PAD_KEY_ROW4__GPIO2_IO_19               0x4001b8b1
             >;
         };
 
@@ -382,8 +404,8 @@
 
         pinctrl_uart3: pinctrl_uart3grp {                  /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
-                //MX6SX_PAD_QSPI1B_DATA0__UART3_CTS_B        0x1b0b1
-                MX6SX_PAD_QSPI1B_DATA0__GPIO4_IO_24        0x30b0
+                MX6SX_PAD_QSPI1B_DATA0__UART3_CTS_B        0x1b0b1
+                //MX6SX_PAD_QSPI1B_DATA0__GPIO4_IO_24        0x30b0
                 MX6SX_PAD_QSPI1B_SCLK__UART3_RX            0x1b0b1
                 MX6SX_PAD_QSPI1B_SS0_B__UART3_TX           0x1b0b1
             >;
@@ -412,8 +434,8 @@
             fsl,pins = <
                 MX6SX_PAD_KEY_COL1__UART6_TX               0x1b0b1
                 MX6SX_PAD_KEY_ROW1__UART6_RX               0x1b0b1
-                //MX6SX_PAD_KEY_ROW0__UART6_CTS_B           0x1b0b1
-                MX6SX_PAD_KEY_ROW0__GPIO2_IO_15        0x30b0                
+                MX6SX_PAD_KEY_ROW0__UART6_CTS_B           0x1b0b1
+                //MX6SX_PAD_KEY_ROW0__GPIO2_IO_15        0x30b0                
                 //MX6SX_PAD_CSI_DATA06__UART6_RTS_B	0x1b0b1
                // MX6SX_PAD_KEY_COL1__UART6_RX               0x1b0b1
                 //MX6SX_PAD_KEY_ROW0__UART6_RTS_B           0x1b0b1
@@ -465,6 +487,13 @@
         pinctrl_tsc2007: pinctrl_tsc2007grp {              /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
                 MX6SX_PAD_LCD1_DATA18__GPIO3_IO_19         0x0001B0B0
+            >;
+        };
+        
+        pinctrl_wdi: pinctrl_wdigrp {                      /*!< Function assigned for the core: Cortex-A9[ca9] */
+            fsl,pins = <
+                MX6SX_PAD_QSPI1B_DATA2__GPIO4_IO_26        0x000010B0
+                MX6SX_PAD_QSPI1B_DATA1__GPIO4_IO_25        0x000010B0
             >;
         };
 
