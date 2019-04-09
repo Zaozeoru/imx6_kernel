@@ -265,17 +265,17 @@
 
         pinctrl_usdhc3: pinctrl_usdhc3grp {                /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
-                MX6SX_PAD_KEY_COL0__USDHC3_CD_B            0x000010B0
-                MX6SX_PAD_SD3_CLK__USDHC3_CLK              0x000030B0
-                MX6SX_PAD_SD3_CMD__USDHC3_CMD              0x000030B0
-                MX6SX_PAD_SD3_DATA0__USDHC3_DATA0          0x000030B0
-                MX6SX_PAD_SD3_DATA1__USDHC3_DATA1          0x000030B0
-                MX6SX_PAD_SD3_DATA2__USDHC3_DATA2          0x000030B0
-                MX6SX_PAD_SD3_DATA3__USDHC3_DATA3          0x000030B0
+                //MX6SX_PAD_KEY_COL0__USDHC3_CD_B            0x000010B0
+                MX6SX_PAD_KEY_COL0__GPIO2_IO_10		0x1b0b0
+                MX6SX_PAD_SD3_CLK__USDHC3_CLK              0x10071
+                MX6SX_PAD_SD3_CMD__USDHC3_CMD              0x1f071
+                MX6SX_PAD_SD3_DATA0__USDHC3_DATA0          0x1f071
+                MX6SX_PAD_SD3_DATA1__USDHC3_DATA1          0x1f071
+                MX6SX_PAD_SD3_DATA2__USDHC3_DATA2          0x1f071
+                MX6SX_PAD_SD3_DATA3__USDHC3_DATA3          0x1f071
             >;
         };
-
-
+        
         pinctrl_usdhc4_50mhz: pinctrl_usdhc4_50mhzgrp {                /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
                 MX6SX_PAD_SD4_CLK__USDHC4_CLK              0x17071
