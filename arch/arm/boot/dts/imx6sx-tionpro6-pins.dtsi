@@ -404,8 +404,8 @@
 
         pinctrl_uart3: pinctrl_uart3grp {                  /*!< Function assigned for the core: Cortex-A9[ca9] */
             fsl,pins = <
-                MX6SX_PAD_QSPI1B_DATA0__UART3_CTS_B        0x1b0b1
-                //MX6SX_PAD_QSPI1B_DATA0__GPIO4_IO_24        0x30b0
+                //MX6SX_PAD_QSPI1B_DATA0__UART3_CTS_B        0x1b0b1
+                MX6SX_PAD_QSPI1B_DATA0__GPIO4_IO_24        0x30b0
                 MX6SX_PAD_QSPI1B_SCLK__UART3_RX            0x1b0b1
                 MX6SX_PAD_QSPI1B_SS0_B__UART3_TX           0x1b0b1
             >;

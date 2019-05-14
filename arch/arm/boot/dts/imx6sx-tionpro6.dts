@@ -558,12 +558,13 @@
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
-	uart-has-rtscts;
+	//uart-has-rtscts;
 	linux,rs485-enabled-at-boot-time;
 	//rs485-rx-during-tx;
 	//rs485-rts-delay = <0 0>;		// in milliseconds
 	//rs485-rts-active-high;
-	//rts-gpios = <&gpio4 24 0>;
+	//rs485-rts-active-low;
+	rts-gpios = <&gpio4 24 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };
 
