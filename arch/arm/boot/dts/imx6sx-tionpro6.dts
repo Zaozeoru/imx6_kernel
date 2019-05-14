@@ -584,12 +584,12 @@
 &uart6 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart6>;
-	uart-has-rtscts;
+	//uart-has-rtscts;
 	linux,rs485-enabled-at-boot-time;
 	//rs485-rx-during-tx;
 	//rs485-rts-delay = <0 0>;		// in milliseconds
 	//rs485-rts-active-high;
-	//rts-gpios = <&gpio2 15 0>;
+	rts-gpios = <&gpio2 15 GPIO_ACTIVE_HIGH>;
 	//fsl,dte-mode;
 	status = "okay";
 };
